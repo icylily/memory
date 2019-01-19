@@ -1,5 +1,3 @@
-//sourse images array
-var arrOfImages = ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg", "p5.jpg", "p6.jpg", "p7.png", "p8.jpg", "p9.png"];
 //make images double
 function doubleImagesArr(arr)
 { 
@@ -80,6 +78,9 @@ function revealCard(event) {
             cardsPicked = [];
             alert("You got it. Good job!");
             //document.write("You get it. Good job!");
+            if (numOfFound === arrOfImages.length/2) {
+                congrationMsg();
+            }
         } else {
             // make a function that will flip the cards back over
 
@@ -93,8 +94,21 @@ function revealCard(event) {
     }
 }
 
+function congrationMsg()
+{
+    console.log("LOL");
+    var congration = document.getElementById("congration");
+    var newImgElement = document.createElement("img");
+    newImgElement.src = "static/images/congrations.jpg";
+    newImgElement.id = "congrationImg";
+    newImgElement.alt = "Congration! You won!!!";
+    congration.appendChild(newImgElement);
+}
 
 
+
+//sourse images array
+var arrOfImages = ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg", "p5.jpg", "p6.jpg", "p7.png", "p8.jpg", "p9.png"];
 doubleImagesArr(arrOfImages);
 suffleCards(arrOfImages);
 displayCards(arrOfImages);
@@ -106,13 +120,15 @@ setTimeout(() => {
     }
 }, 3000);
 
-var cardsPicked = [];    // outside the function, we'll keep track of which cards have been picked
 numOfAttemps = 0; //global variable. keep track of the numbers of attemps
 numOfFound = 0;  //same as above
 setAttemps("attemps", numOfAttemps); //initialize the attemps
 setFound("found", numOfFound); //initialize the founds
 
+var cardsPicked = [];    // outside the function, we'll keep track of which cards have been picked
+
 var cards = document.getElementsByClassName("card");    // grab all the cards
 for (var i = 0; i < cards.length; i++) {
     cards[i].addEventListener("click", revealCard);
 }
+
