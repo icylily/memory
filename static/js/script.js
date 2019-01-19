@@ -39,9 +39,7 @@ function suffleCards(arr)
 
     }
 }
-doubleImagesArr(arrOfImages);
-suffleCards(arrOfImages);
-displayCards(arrOfImages);
+
 
 function hideACard(idx) {
     // get the image with the specified idx/id
@@ -50,28 +48,17 @@ function hideACard(idx) {
     specificCard.src = "static/images/questionmark.png";
 }
 
-// call on the hideACard function for each card in our array of images
-for (var i = 0; i < arrOfImages.length; i++) {
-    // let's call on the hideACard function we just made
-    hideACard(i);
-}
 
-function revealCard(event) {    // this time, the click event is going to be the input
-    // the event actually contains the element (and all its attributes)
-    // we'll use it to get the id of the element that was clicked
-    var clickedImageId = event.target.id;
 
-    // grab the element that was clicked on
-    var clickedImage = document.getElementById(clickedImageId);
-    // update the image's source to show a different picture
-    clickedImage.src = "static/images/" + arrOfImages[clickedImageId];
-}
-var cards = document.getElementsByClassName("card");    // grab all the cards
-for (var i = 0; i < cards.length; i++) {
-    cards[i].addEventListener("click", revealCard);
-}
 
-var cardsPicked = [];    // outside the function, we'll keep track of which cards have been picked
+function setAttemps(idx, attemps) {
+    var newElement = document.getElementById(idx);
+    newElement.innerHTML = "Attemps:" + attemps;
+}
+function setFound(idx, found) {
+    var newElement = document.getElementById(idx);
+    newElement.innerHTML = "Founds:" + found;
+}
 function revealCard(event) {
     var clickedImageId = event.target.id;
 
@@ -84,12 +71,18 @@ function revealCard(event) {
     // if 2 cards have been picked
     if (cardsPicked.length == 2) {
         // if the 2 selected images are the same
+        numOfAttemps += 1;
+        setAttemps("attemps", numOfAttemps);
         if (arrOfImages[cardsPicked[0]] == arrOfImages[cardsPicked[1]]) {
             // resets the cards picked
+            numOfFound++;
+            setFound("found", numOfFound);
             cardsPicked = [];
             alert("You got it. Good job!");
+            //document.write("You get it. Good job!");
         } else {
             // make a function that will flip the cards back over
+
             var hidePickedCards = function () {
                 hideACard(cardsPicked[0]);    // remember this function from earlier?
                 hideACard(cardsPicked[1]);
@@ -98,4 +91,28 @@ function revealCard(event) {
             window.setTimeout(hidePickedCards, 1000);
         }
     }
+}
+
+
+
+doubleImagesArr(arrOfImages);
+suffleCards(arrOfImages);
+displayCards(arrOfImages);
+//delay 3s,then hide all cards
+setTimeout(() => {
+    for (var i = 0; i < arrOfImages.length; i++) {
+        // let's call on the hideACard function we just made
+        hideACard(i);
+    }
+}, 3000);
+
+var cardsPicked = [];    // outside the function, we'll keep track of which cards have been picked
+numOfAttemps = 0; //global variable. keep track of the numbers of attemps
+numOfFound = 0;  //same as above
+setAttemps("attemps", numOfAttemps); //initialize the attemps
+setFound("found", numOfFound); //initialize the founds
+
+var cards = document.getElementsByClassName("card");    // grab all the cards
+for (var i = 0; i < cards.length; i++) {
+    cards[i].addEventListener("click", revealCard);
 }
